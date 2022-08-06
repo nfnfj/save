@@ -83,7 +83,7 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		SUtil.check();
+		SUtil.doTheCheck();
 	
 		ClientPrefs.loadDefaultKeys();
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
@@ -98,6 +98,8 @@ class Main extends Sprite
 
 		#if html5
 		FlxG.autoPause = false;
+		FlxG.mouse.visible = false;
+		#elseif android
 		FlxG.mouse.visible = false;
 		#end
 

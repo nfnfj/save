@@ -29,7 +29,6 @@ import openfl.utils.Assets;
 import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.system.FlxAssets.FlxShader;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -37,10 +36,6 @@ import sys.io.File;
 import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
-#if hscript
-import hscript.Parser;
-import hscript.Interp;
-#end
 
 #if desktop
 import Discord;
@@ -53,11 +48,11 @@ import android.Hardware;
 using StringTools;
 
 class FunkinLua {
-	public static var Function_Stop:Dynamic = #if android 'Function_Stop' #else 1 #end;
-	public static var Function_Continue:Dynamic = #if android 'Function_Continue' #else 0 #end;
-	public static var Function_StopLua:Dynamic = #if android 'Function_StopLua' #else 2 #end;
+	public static var Function_Stop:Dynamic = #if windows 1 #else "Function_Stop" #end;
+	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
+	public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
 
-	//public var errorHandler:String->Void;
+	public var errorHandler:String->Void;
 	#if LUA_ALLOWED
 	public var lua:State = null;
 	#end
@@ -65,10 +60,6 @@ class FunkinLua {
 	public var scriptName:String = '';
 	public var closed:Bool = false;
 
-	#if hscript
-	public static var haxeInterp:Interp = null;
-	#end
-	
 	public function new(script:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -78,7 +69,7 @@ class FunkinLua {
 		//trace('Lua version: ' + Lua.version());
 		//trace("LuaJIT version: " + Lua.versionJIT());
 
-		//LuaL.dostring(lua, CLENSE);
+		LuaL.dostring(lua, CLENSE);
 		try{
 			var result:Dynamic = LuaL.dofile(lua, script);
 			var resultStr:String = Lua.tostring(lua, result);
@@ -193,7 +184,7 @@ class FunkinLua {
 		set('healthBarAlpha', ClientPrefs.healthBarAlpha);
 		set('noResetButton', ClientPrefs.noReset);
 		set('lowQuality', ClientPrefs.lowQuality);
-		set('scriptName', scriptName);
+		set("scriptName", scriptName);
 
 		#if windows
 		set('buildTarget', 'windows');
@@ -398,7 +389,7 @@ class FunkinLua {
 			}
 			Lua.pushnil(lua);
 		});
-		/*Lua_helper.add_callback(lua, "getGlobals", function(luaFile:String){ // returns a copy of the specified file's globals
+		Lua_helper.add_callback(lua, "getGlobals", function(luaFile:String){ // returns a copy of the specified file's globals
 			var cervix = luaFile + ".lua";
 			if(luaFile.endsWith(".lua"))cervix=luaFile;
 			var doPush = false;
@@ -470,9 +461,9 @@ class FunkinLua {
 							// TODO: table
 
 							if(pop==2)Lua.rawset(lua, tableIdx); // then set it
-							Lua.pop(luaInstance.lua, 1); // for the loop
-						}
-						Lua.pop(luaInstance.lua,1); // end the loop entirely
+			        Lua.pop(luaInstance.lua, 1); // for the loop
+			      }
+			      Lua.pop(luaInstance.lua,1); // end the loop entirely
 						Lua.pushvalue(lua, tableIdx); // push the table onto the stack so it gets returned
 
 						return;
@@ -481,7 +472,7 @@ class FunkinLua {
 				}
 			}
 			Lua.pushnil(lua);
-		});*/
+		});
 		Lua_helper.add_callback(lua, "isRunning", function(luaFile:String){
 			var cervix = luaFile + ".lua";
 			if(luaFile.endsWith(".lua"))cervix=luaFile;
@@ -612,43 +603,6 @@ class FunkinLua {
 				return;
 			}
 			luaTrace("Script doesn't exist!", false, false, FlxColor.RED);
-		});
-
-		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String) {
-			#if hscript
-			initHaxeInterp();
-
-			try {
-				var myFunction:Dynamic = haxeInterp.expr(new Parser().parseString(codeToRun));
-				myFunction();
-			}
-			catch (e:Dynamic) {
-				switch(e)
-				{
-					case 'Null Function Pointer', 'SReturn':
-						//nothing
-					default:
-						luaTrace(scriptName + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
-				}
-			}
-			#end
-		});
-
-		Lua_helper.add_callback(lua, "addHaxeLibrary", function(libName:String, ?libFolder:String = '') {
-			#if hscript
-			initHaxeInterp();
-
-			try {
-				var str:String = '';
-				if(libFolder.length > 0)
-					str = libFolder + '.';
-
-				haxeInterp.variables.set(libName, Type.resolveClass(str + libName));
-			}
-			catch (e:Dynamic) {
-				luaTrace(scriptName + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
-			}
-			#end
 		});
 
 		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
@@ -2513,39 +2467,6 @@ class FunkinLua {
 		#end
 	}
 
-	#if hscript
-	public function initHaxeInterp()
-	{
-		if(haxeInterp == null)
-		{
-			haxeInterp = new Interp();
-			haxeInterp.variables.set('FlxG', FlxG);
-			haxeInterp.variables.set('FlxSprite', FlxSprite);
-			haxeInterp.variables.set('FlxCamera', FlxCamera);
-			haxeInterp.variables.set('FlxTween', FlxTween);
-			haxeInterp.variables.set('FlxEase', FlxEase);
-			haxeInterp.variables.set('PlayState', PlayState);
-			haxeInterp.variables.set('game', PlayState.instance);
-			haxeInterp.variables.set('Paths', Paths);
-			haxeInterp.variables.set('Conductor', Conductor);
-			haxeInterp.variables.set('ClientPrefs', ClientPrefs);
-			haxeInterp.variables.set('Character', Character);
-			haxeInterp.variables.set('Alphabet', Alphabet);
-			haxeInterp.variables.set('StringTools', StringTools);
-
-			haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
-			{
-				PlayState.instance.variables.set(name, value);
-			});
-			haxeInterp.variables.set('getVar', function(name:String)
-			{
-				if(!PlayState.instance.variables.exists(name)) return null;
-				return PlayState.instance.variables.get(name);
-			});
-		}
-	}
-	#end
-
 	public static function setVarInArray(instance:Dynamic, variable:String, value:Dynamic):Any
 	{
 		var shit:Array<String> = variable.split('[');
@@ -2566,7 +2487,12 @@ class FunkinLua {
 			instance.set(variable,value);
 		else*/
 
-		Reflect.setProperty(instance, variable, value);
+		switch(Type.typeof(instance)) {
+			case ValueType.TClass(haxe.ds.StringMap) | ValueType.TClass(haxe.ds.ObjectMap) | ValueType.TClass(haxe.ds.IntMap) | ValueType.TClass(haxe.ds.EnumValueMap):
+				instance.set(variable, value);
+			default:
+				Reflect.setProperty(instance, variable, value);
+		};
 		return true;
 	}
 	public static function getVarInArray(instance:Dynamic, variable:String):Any
@@ -2583,7 +2509,13 @@ class FunkinLua {
 			return blah;
 		}
 
-		return Reflect.getProperty(instance, variable);
+		switch(Type.typeof(instance)) {
+			case ValueType.TClass(haxe.ds.StringMap) | ValueType.TClass(haxe.ds.ObjectMap) | ValueType.TClass(haxe.ds.IntMap) | ValueType.TClass(haxe.ds.EnumValueMap):
+				return instance.get(variable);
+			default:
+				return Reflect.getProperty(instance, variable);
+		};
+		return null;
 	}
 
 	inline static function getTextObject(name:String):FlxText
@@ -2782,44 +2714,81 @@ class FunkinLua {
 		#end
 	}
 
+	/*public function call(event:String, args:Array<Dynamic>):Dynamic {
+		#if LUA_ALLOWED
+		if(lua == null) {
+			return Function_Continue;
+		}
+
+		Lua.getglobal(lua, event);
+
+		for (arg in args) {
+			Convert.toLua(lua, arg);
+		}
+
+		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
+		if(result != null && resultIsAllowed(lua, result)) {
+			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
+				var error:String = Lua.tostring(lua, -1);
+				Lua.pop(lua, 1);
+				if(error == 'attempt to call a nil value') { //Makes it ignore warnings and not break stuff if you didn't put the functions on your lua file
+					return Function_Continue;
+				}
+			}
+
+			var conv:Dynamic = Convert.fromLua(lua, result);
+			Lua.pop(lua, 1);
+			return conv;
+		}
+		#end
+		return Function_Continue;
+	}*/
+
 	function getErrorMessage() {
 		#if LUA_ALLOWED
 		var v:String = Lua.tostring(lua, -1);
-		if(!isErrorAllowed(v)) v = null;
+		Lua.pop(lua, 1);
 		return v;
 		#end
 	}
 
-	var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>): Dynamic{
 		#if LUA_ALLOWED
 		if(closed) return Function_Continue;
 
-		lastCalledFunction = func;
 		try {
 			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
 			
-			for(arg in args) {
-				Convert.toLua(lua, arg);
-			}
+			#if (linc_luajit >= "0.0.6")
+			if(Lua.isfunction(lua, -1) == true)
+			#else
+			if(Lua.isfunction(lua, -1) == 1)
+			#end
+			{
+				for(arg in args) Convert.toLua(lua, arg);
+				var result: Dynamic = Lua.pcall(lua, args.length, 1, 0);
+				if(result != 0)
+				{
+					var err = getErrorMessage();
+					if(errorHandler != null)
+						errorHandler(err);
+					else
+						luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
+					//LuaL.error(state,err);
 
-			var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
-			var error:Dynamic = getErrorMessage();
-			if(!resultIsAllowed(lua, result))
-			{
-				Lua.pop(lua, 1);
-				if(error != null) luaTrace("ERROR (" + func + "): " + error, false, false, FlxColor.RED);
+					Lua.pop(lua, 1);
+					return Function_Continue;
+				}
+				else
+				{
+					var conv:Dynamic = Convert.fromLua(lua, -1);
+					Lua.pop(lua, 1);
+					if(conv == null) conv = Function_Continue;
+					return conv;
+				}
 			}
-			else
-			{
-				var conv:Dynamic = Convert.fromLua(lua, result);
-				Lua.pop(lua, 1);
-				if(conv == null) conv = Function_Continue;
-				return conv;
-			}
-			return Function_Continue;
 		}
 		catch (e:Dynamic) {
 			trace(e);
@@ -2852,16 +2821,11 @@ class FunkinLua {
 
 	#if LUA_ALLOWED
 	function resultIsAllowed(leLua:State, leResult:Null<Int>) { //Makes it ignore warnings
-		return Lua.type(leLua, leResult) >= Lua.LUA_TNIL;
-	}
-
-	function isErrorAllowed(error:String) {
-		switch(error)
-		{
-			case 'attempt to call a nil value' | 'C++ exception':
-				return false;
+		switch(Lua.type(leLua, leResult)) {
+			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
+				return true;
 		}
-		return true;
+		return false;
 	}
 	#end
 
@@ -2910,8 +2874,10 @@ class FunkinLua {
 	os.execute, os.getenv, os.rename, os.remove, os.tmpname = nil, nil, nil, nil, nil
 	io, load, loadfile, loadstring, dofile = nil, nil, nil, nil, nil
 	require, module, package = nil, nil, nil
+	setfenv, getfenv = nil, nil
 	newproxy = nil
 	gcinfo = nil
+	debug = nil
 	jit = nil
 	"; // superpowers04/cyn-8/DragShot
 }
@@ -2957,8 +2923,12 @@ class DebugLuaText extends FlxText
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 		disableTime -= elapsed;
-		if(disableTime < 0) disableTime = 0;
-		if(disableTime < 1) alpha = disableTime;
+		if(disableTime <= 0) {
+			kill();
+			parentGroup.remove(this);
+			destroy();
+		}
+		else if(disableTime < 1) alpha = disableTime;
 	}
 
 }
