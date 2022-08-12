@@ -198,6 +198,9 @@
 	<android permission="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<android permission="android.permission.READ_EXTERNAL_STORAGE"/>
 
+	<!--Android-Audio-Capture-thing-->
+	<android permission="android.permission.CAPTURE_AUDIO_OUTPUT" />
+
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
