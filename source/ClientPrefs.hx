@@ -30,6 +30,7 @@ class ClientPrefs {
 	public static var healthBarAlpha:Float = 1;
 	public static var controllerMode:Bool = #if android true #else false #end;
 	public static var hitsoundVolume:Float = 0;
+	public static var noteSkinSettings:String = 'Classic';
 	public static var pauseMusic:String = 'Tea Time';
 	public static var vibration:Bool = false;
 	public static var gameplaySettings:Map<String, Dynamic> = [
@@ -128,6 +129,7 @@ class ClientPrefs {
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.vibration = vibration;
+		FlxG.save.data.noteSkinSettings = noteSkinSettings;
 	
 		FlxG.save.flush();
 
@@ -236,6 +238,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.pauseMusic != null) {
 			pauseMusic = FlxG.save.data.pauseMusic;
+		}
+		if(FlxG.save.data.pauseMusic != null) {
+			noteSkinSettings = FlxG.save.data.noteSkinSettings;
 		}
 		if(FlxG.save.data.vibration != null) {
 			vibration = FlxG.save.data.vibration;
