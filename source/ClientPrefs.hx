@@ -32,6 +32,7 @@ class ClientPrefs {
 	public static var hitsoundVolume:Float = 0;
 	public static var noteSkinSettings:String = 'Classic';
 	public static var scoreposition:String = 'Classic';
+	public static var mainmenu:String = 'Classic';
 	public static var pauseMusic:String = 'Tea Time';
 	public static var vibration:Bool = false;
 	public static var gameplaySettings:Map<String, Dynamic> = [
@@ -132,6 +133,7 @@ class ClientPrefs {
 		FlxG.save.data.vibration = vibration;
 		FlxG.save.data.noteSkinSettings = noteSkinSettings;
 		FlxG.save.data.scoreposition = scoreposition;
+		FlxG.save.data.mainmenu = mainmenu;
 	
 		FlxG.save.flush();
 
