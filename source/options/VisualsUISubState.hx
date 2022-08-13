@@ -105,6 +105,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			['Classic', 'Circle', 'Osu Felopes', '3D', 'Ron']);
 		addOption(option);
 		
+		var option:Option = new Option('Score Text Position',
+			'Classic is Psych Engine position, New is OS Engine position',
+			'scoreposition',
+			'string',
+			'Classic',
+			['Classic', 'Sacorg']);
+		addOption(option);
+		
 		var option:Option = new Option('Pause Screen Song:',
 			"What song do you prefer for the Pause Screen?",
 			'pauseMusic',
