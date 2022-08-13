@@ -512,6 +512,7 @@ class ModsMenuState extends MusicBeatState
 						MusicBeatState.switchState(new IndieMain());
 			}
 		}
+	}
 
 		if(controls.UI_UP_P)
 		{

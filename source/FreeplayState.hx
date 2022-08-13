@@ -337,7 +337,9 @@ class FreeplayState extends MusicBeatState
 					MusicBeatState.switchState(new MainMenuState());
 			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
 						MusicBeatState.switchState(new IndieMain());
-		}
+		} else {
+					MusicBeatState.switchState(new MainMenuState());
+			} 
 	}
 
 		if(ctrl)
