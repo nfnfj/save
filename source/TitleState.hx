@@ -514,8 +514,10 @@ class TitleState extends MusicBeatState
 				{
 					if (mustUpdate) {
 						MusicBeatState.switchState(new OutdatedState());
-					} else {
+					} if (ClientPrefs.mainmenu == 'Classic') {
 						MusicBeatState.switchState(new MainMenuState());
+					} else if (ClientPrefs.mainmenu == 'Indie Cross') {
+						MusicBeatState.switchState(new IndieMain());
 					}
 					closedState = true;
 				});
