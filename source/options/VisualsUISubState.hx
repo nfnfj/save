@@ -102,7 +102,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'noteSkinSettings',
 			'string',
 			'Classic',
-			['Classic', 'Circle']);
+			['Classic', 'Circle', 'Osu Felopes']);
 		addOption(option);
 		
 		var option:Option = new Option('Pause Screen Song:',
