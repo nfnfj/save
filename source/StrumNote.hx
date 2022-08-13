@@ -42,6 +42,10 @@ class StrumNote extends FlxSprite
 					skin = 'NOTE_assets_circle';
 				} else if (ClientPrefs.noteSkinSettings == 'Osu Felopes') {
 					skin = 'NOTE_assets_osu_felopes';
+				} else if (ClientPrefs.noteSkinSettings == '3D') {
+					skin = 'NOTE_assets_3D';
+				} else if (ClientPrefs.noteSkinSettings == 'Ron') {
+					skin = 'ron';
 				} else {
 					skin = 'NOTE_assets';// for preventing crashes
 				}
