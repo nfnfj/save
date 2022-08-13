@@ -31,6 +31,7 @@ class ClientPrefs {
 	public static var controllerMode:Bool = #if android true #else false #end;
 	public static var hitsoundVolume:Float = 0;
 	public static var noteSkinSettings:String = 'Classic';
+	public static var scoreposition:String = 'Classic';
 	public static var pauseMusic:String = 'Tea Time';
 	public static var vibration:Bool = false;
 	public static var gameplaySettings:Map<String, Dynamic> = [
@@ -130,6 +131,7 @@ class ClientPrefs {
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.vibration = vibration;
 		FlxG.save.data.noteSkinSettings = noteSkinSettings;
+		FlxG.save.data.scoreposition = scoreposition;
 	
 		FlxG.save.flush();
 
@@ -192,6 +194,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.noteOffset != null) {
 			noteOffset = FlxG.save.data.noteOffset;
+		}
+		if(FlxG.save.data.scoreposition != null) {
+			scoreposition = FlxG.save.data.scoreposition;
 		}
 		if(FlxG.save.data.arrowHSV != null) {
 			arrowHSV = FlxG.save.data.arrowHSV;
