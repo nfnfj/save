@@ -139,7 +139,6 @@ class OptionsState extends MusicBeatState
 						MusicBeatState.switchState(new IndieMain());
 		}
 	}
-}
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
