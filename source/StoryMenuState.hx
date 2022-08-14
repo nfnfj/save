@@ -269,7 +269,14 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			MusicBeatState.switchState(new MainMenuState());
+			{
+				  if (ClientPrefs.mainmenu == 'Classic') {
+						MusicBeatState.switchState(new MainMenuState());
+					} else if (ClientPrefs.mainmenu == 'Indie Cross') {
+						MusicBeatState.switchState(new IndieMain());
+					}
+					closedState = true;
+				});
 		}
 
 		super.update(elapsed);
