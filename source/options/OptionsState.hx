@@ -138,6 +138,8 @@ class OptionsState extends MusicBeatState
 			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
 						MusicBeatState.switchState(new IndieMain());
 		}
+	}
+}
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
