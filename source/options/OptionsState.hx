@@ -133,12 +133,8 @@ class OptionsState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			if(ClientPrefs.mainmenu == 'Classic') {
-					MusicBeatState.switchState(new MainMenuState());
-			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
-						MusicBeatState.switchState(new IndieMain());
+			MusicBeatState.switchState(new MainMenuState());
 		}
-	}
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);
