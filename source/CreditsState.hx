@@ -225,11 +225,7 @@ class CreditsState extends MusicBeatState
 					colorTween.cancel();
 				}
 				FlxG.sound.play(Paths.sound('cancelMenu'));
-				if(ClientPrefs.mainmenu == 'Classic') {
-					MusicBeatState.switchState(new MainMenuState());
-			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
-						MusicBeatState.switchState(new IndieMain());
-					}
+				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
 			}
 		}

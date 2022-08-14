@@ -506,13 +506,9 @@ class ModsMenuState extends MusicBeatState
 			}
 			else
 			{
-				if(ClientPrefs.mainmenu == 'Classic') {
-					MusicBeatState.switchState(new MainMenuState());
-			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
-						MusicBeatState.switchState(new IndieMain());
+				MusicBeatState.switchState(new MainMenuState());
 			}
 		}
-	}
 
 		if(controls.UI_UP_P)
 		{
