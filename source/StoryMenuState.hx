@@ -273,9 +273,7 @@ class StoryMenuState extends MusicBeatState
 					MusicBeatState.switchState(new MainMenuState());
 			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
 						MusicBeatState.switchState(new IndieMain());
-		} else {
-					MusicBeatState.switchState(new MainMenuState());
-			}
+		    }
 	}
 
 		super.update(elapsed);
