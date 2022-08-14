@@ -333,14 +333,8 @@ class FreeplayState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			if(ClientPrefs.mainmenu == 'Classic') {
-					MusicBeatState.switchState(new MainMenuState());
-			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
-						MusicBeatState.switchState(new IndieMain());
-		} else {
-					MusicBeatState.switchState(new MainMenuState());
-			} 
-	}
+			MusicBeatState.switchState(new MainMenuState());
+		}
 
 		if(ctrl)
 		{

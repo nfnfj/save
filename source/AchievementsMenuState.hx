@@ -98,6 +98,7 @@ class AchievementsMenuState extends MusicBeatState
 						MusicBeatState.switchState(new IndieMain());
 		}
 	}
+}
 
 	function changeSelection(change:Int = 0) {
 		curSelected += change;

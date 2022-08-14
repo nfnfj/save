@@ -269,12 +269,8 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			if(ClientPrefs.mainmenu == 'Classic') {
-					MusicBeatState.switchState(new MainMenuState());
-			} else if (ClientPrefs.mainmenu == 'Indie Cross') {
-						MusicBeatState.switchState(new IndieMain());
-		    }
-	}
+			MusicBeatState.switchState(new MainMenuState());
+		}
 
 		super.update(elapsed);
 
