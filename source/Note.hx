@@ -382,6 +382,27 @@ class Note extends FlxSprite
 		setGraphicSize(Std.int(width * 0.7));
 		updateHitbox();
 	}
+	
+	switch (noteVariant)
+		{
+			default:
+			{
+						switch (noteData)
+						{
+							case 0:
+								x += swagWidth * 0;
+								animation.play('purpleScroll');
+							case 1:
+								x += swagWidth * 1;
+								animation.play('blueScroll');
+							case 2:
+								x += swagWidth * 2;
+								animation.play('greenScroll');
+							case 3:
+								x += swagWidth * 3;
+								animation.play('redScroll');
+						}
+					}
 
 	function loadPixelNoteAnims() {
 		if(isSustainNote) {
