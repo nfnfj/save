@@ -403,6 +403,7 @@ class Note extends FlxSprite
 								animation.play('redScroll');
 						}
 					}
+		}
 
 	function loadPixelNoteAnims() {
 		if(isSustainNote) {
