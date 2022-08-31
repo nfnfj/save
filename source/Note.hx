@@ -42,6 +42,7 @@ class Note extends FlxSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var noteType(default, set):String = null;
+	public var noteVariant:String = '';
 
 	public var eventName:String = '';
 	public var eventLength:Int = 0;
@@ -169,6 +170,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
+		noteVariant = noteType;
 
 		x += (ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -385,8 +387,6 @@ class Note extends FlxSprite
 	
 	switch (noteVariant)
 		{
-			default:
-			{
 						switch (noteData)
 						{
 							case 0:
@@ -402,7 +402,6 @@ class Note extends FlxSprite
 								x += swagWidth * 3;
 								animation.play('redScroll');
 						}
-					}
 		}
 
 	function loadPixelNoteAnims() {
